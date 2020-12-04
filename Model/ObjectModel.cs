@@ -81,5 +81,7 @@ namespace MyLibraryWinForms.Model
     {
         public MediaType type { get; set; }
         public long number { get; set; } 
+        public int runningTime { get; set; }
+        public int releaseYear { get; set; }
     }
 }
