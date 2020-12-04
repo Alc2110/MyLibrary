@@ -1,0 +1,10 @@
+C:\Users\alexc\Documents\projects\MyLibrary\bin\Debug\MyLibrary.exe.config
+C:\Users\alexc\Documents\projects\MyLibrary\bin\Debug\MyLibrary.exe
+C:\Users\alexc\Documents\projects\MyLibrary\bin\Debug\MyLibrary.pdb
+C:\Users\alexc\Documents\projects\MyLibrary\obj\Debug\MyLibraryWinForms.csprojAssemblyReference.cache
+C:\Users\alexc\Documents\projects\MyLibrary\obj\Debug\MyLibrary.MainWindow.resources
+C:\Users\alexc\Documents\projects\MyLibrary\obj\Debug\MyLibrary.Properties.Resources.resources
+C:\Users\alexc\Documents\projects\MyLibrary\obj\Debug\MyLibraryWinForms.csproj.GenerateResource.cache
+C:\Users\alexc\Documents\projects\MyLibrary\obj\Debug\MyLibraryWinForms.csproj.CoreCompileInputs.cache
+C:\Users\alexc\Documents\projects\MyLibrary\obj\Debug\MyLibrary.exe
+C:\Users\alexc\Documents\projects\MyLibrary\obj\Debug\MyLibrary.pdb
