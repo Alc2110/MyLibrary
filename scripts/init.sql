@@ -5,7 +5,7 @@ CREATE TABLE "Books" (
     "isbn" INTEGER,
     "isbn13"    INTEGER,
     "deweyDecimal"  REAL,
-    "publisherId"   INTEGER,
+    "publisherId"   INTEGER NOT NULL,
     "format"    TEXT,
     "language"  TEXT,
     "datePublished" TEXT,
