@@ -39,7 +39,8 @@ CREATE TABLE "Media" (
     "number"    INTEGER,
     "image" BLOB,
     "runningTime"   INTEGER,
-    "releaseYear"   INTEGER
+    "releaseYear"   INTEGER,
+    "notes" TEXT
 );
 
 CREATE TABLE "Tags" (
