@@ -2,14 +2,16 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace MyLibraryWinForms.Model
+namespace MyLibraryWinForms.Model.ObjectModel
 {
-    public abstract class Item // abstract class to reduce code duplication
+    public abstract class BaseEntity // abstract class to reduce code duplication
     {
         public int id { get; set; }
-        public string title { get; set; }
+    }
 
-        public string date_published { get; set; }
+    public abstract class Item : BaseEntity // abstract class to reduce code duplication
+    {
+        public string title { get; set; }
 
         public System.Drawing.Image image { get; set; }
     }
@@ -25,16 +27,16 @@ namespace MyLibraryWinForms.Model
             this.tags = new List<string>();
         }
 
-        public string title_long { get; set; }
+        public string titleLong { get; set; }
 
-        public long isbn { get; set; }
-        public long isbn13 { get; set; }
+        public long? isbn { get; set; }
+        public long? isbn13 { get; set; }
 
-        public double dewey_decimal { get; set; }
+        public double? deweyDecimal { get; set; }
         public string format { get; set; }
 
         public string edition { get; set; }
-        public int pages { get; set; }
+        public int? pages { get; set; }
         public string dimensions { get; set; }
         public string overview { get; set; }
 
@@ -77,11 +79,17 @@ namespace MyLibraryWinForms.Model
         Other
     }
 
-    public class Media : Item
+    public class MediaItem : Item
     {
         public MediaType type { get; set; }
-        public long number { get; set; } 
-        public int runningTime { get; set; }
-        public int releaseYear { get; set; }
+        public long? number { get; set; } 
+        public int? runningTime { get; set; }
+        public int? releaseYear { get; set; }
+    }
+
+    public sealed class Author : BaseEntity
+    {
+        public string firstName { get; set; }
+        public string lastName { get; set; }
     }
 }
