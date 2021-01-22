@@ -28,6 +28,8 @@ namespace MyLibraryWinForms
         {
             InitializeComponent();
 
+            helpToolStripMenuItem.Enabled = false;
+
             // complete the list of item types
             foreach (var t in Enum.GetValues(typeof(MediaType)))
                 itemTypes.Add(t.ToString() + "s"); // pluralise
@@ -384,11 +386,15 @@ namespace MyLibraryWinForms
         {
             filterTitlesTextBox.Text = string.Empty;
         }
-        #endregion
-
         private void filterTitlesTextBox_TextChanged(object sender, EventArgs e)
         {
             ApplyFilters();
         }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+        #endregion
     }
 }

@@ -53,10 +53,10 @@ namespace MyLibraryWinForms
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.viewTagsButton = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.filterTitlesTextBox = new System.Windows.Forms.TextBox();
-            this.titleFilterLabel = new System.Windows.Forms.Label();
-            this.applyFilterButton = new System.Windows.Forms.Button();
             this.clearFilterButton = new System.Windows.Forms.Button();
+            this.applyFilterButton = new System.Windows.Forms.Button();
+            this.titleFilterLabel = new System.Windows.Forms.Label();
+            this.filterTitlesTextBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.itemsGrid)).BeginInit();
@@ -84,7 +84,6 @@ namespace MyLibraryWinForms
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.exitToolStripMenuItem});
-            this.fileToolStripMenuItem.Enabled = false;
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(46, 24);
             this.fileToolStripMenuItem.Text = "File";
@@ -92,8 +91,9 @@ namespace MyLibraryWinForms
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(116, 26);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.exitToolStripMenuItem.Text = "Exit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
             // libraryToolStripMenuItem
             // 
@@ -109,19 +109,19 @@ namespace MyLibraryWinForms
             // addBooktoolStripMenuItem
             // 
             this.addBooktoolStripMenuItem.Name = "addBooktoolStripMenuItem";
-            this.addBooktoolStripMenuItem.Size = new System.Drawing.Size(201, 26);
+            this.addBooktoolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.addBooktoolStripMenuItem.Text = "Add Book";
             // 
             // addMediatoolStripMenuItem
             // 
             this.addMediatoolStripMenuItem.Name = "addMediatoolStripMenuItem";
-            this.addMediatoolStripMenuItem.Size = new System.Drawing.Size(201, 26);
+            this.addMediatoolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.addMediatoolStripMenuItem.Text = "Add Media Item";
             // 
             // deleteSelectionToolStripMenuItem
             // 
             this.deleteSelectionToolStripMenuItem.Name = "deleteSelectionToolStripMenuItem";
-            this.deleteSelectionToolStripMenuItem.Size = new System.Drawing.Size(201, 26);
+            this.deleteSelectionToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.deleteSelectionToolStripMenuItem.Text = "Delete Selection";
             // 
             // helpToolStripMenuItem
@@ -293,24 +293,15 @@ namespace MyLibraryWinForms
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Search";
             // 
-            // filterTitlesTextBox
+            // clearFilterButton
             // 
-            this.filterTitlesTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.filterTitlesTextBox.Location = new System.Drawing.Point(53, 19);
-            this.filterTitlesTextBox.Name = "filterTitlesTextBox";
-            this.filterTitlesTextBox.Size = new System.Drawing.Size(220, 20);
-            this.filterTitlesTextBox.TabIndex = 13;
-            this.filterTitlesTextBox.TextChanged += new System.EventHandler(this.filterTitlesTextBox_TextChanged);
-            // 
-            // titleFilterLabel
-            // 
-            this.titleFilterLabel.AutoSize = true;
-            this.titleFilterLabel.Location = new System.Drawing.Point(9, 20);
-            this.titleFilterLabel.Name = "titleFilterLabel";
-            this.titleFilterLabel.Size = new System.Drawing.Size(30, 15);
-            this.titleFilterLabel.TabIndex = 13;
-            this.titleFilterLabel.Text = "Title";
+            this.clearFilterButton.Location = new System.Drawing.Point(200, 45);
+            this.clearFilterButton.Name = "clearFilterButton";
+            this.clearFilterButton.Size = new System.Drawing.Size(73, 23);
+            this.clearFilterButton.TabIndex = 14;
+            this.clearFilterButton.Text = "Clear";
+            this.clearFilterButton.UseVisualStyleBackColor = true;
+            this.clearFilterButton.Click += new System.EventHandler(this.clearFilterButton_Click);
             // 
             // applyFilterButton
             // 
@@ -321,15 +312,24 @@ namespace MyLibraryWinForms
             this.applyFilterButton.Text = "Apply";
             this.applyFilterButton.UseVisualStyleBackColor = true;
             // 
-            // clearFilterButton
+            // titleFilterLabel
             // 
-            this.clearFilterButton.Location = new System.Drawing.Point(200, 45);
-            this.clearFilterButton.Name = "clearFilterButton";
-            this.clearFilterButton.Size = new System.Drawing.Size(73, 23);
-            this.clearFilterButton.TabIndex = 14;
-            this.clearFilterButton.Text = "Clear";
-            this.clearFilterButton.UseVisualStyleBackColor = true;
-            this.clearFilterButton.Click += new System.EventHandler(this.clearFilterButton_Click);
+            this.titleFilterLabel.AutoSize = true;
+            this.titleFilterLabel.Location = new System.Drawing.Point(9, 20);
+            this.titleFilterLabel.Name = "titleFilterLabel";
+            this.titleFilterLabel.Size = new System.Drawing.Size(30, 15);
+            this.titleFilterLabel.TabIndex = 13;
+            this.titleFilterLabel.Text = "Title";
+            // 
+            // filterTitlesTextBox
+            // 
+            this.filterTitlesTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.filterTitlesTextBox.Location = new System.Drawing.Point(53, 19);
+            this.filterTitlesTextBox.Name = "filterTitlesTextBox";
+            this.filterTitlesTextBox.Size = new System.Drawing.Size(220, 20);
+            this.filterTitlesTextBox.TabIndex = 13;
+            this.filterTitlesTextBox.TextChanged += new System.EventHandler(this.filterTitlesTextBox_TextChanged);
             // 
             // label1
             // 
