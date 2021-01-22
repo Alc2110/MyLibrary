@@ -5,6 +5,8 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
+using System.Timers;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using MyLibraryWinForms.Model.ObjectModel;
@@ -16,6 +18,11 @@ namespace MyLibraryWinForms
     public partial class MainWindow : Form
     {
         private List<string> itemTypes = new List<string>() { "Books", "Media Items (all types)" };
+
+        private const int FILTER_DELAY = 1000; // millis
+        private System.Timers.Timer filterDelayTimer;
+        private readonly TimeSpan REGEX_TIMEOUT = new TimeSpan(0, 0, 0, 0, 10);
+        private const RegexOptions REGEX_OPTIONS = RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture;
 
         public MainWindow()
         {
@@ -39,6 +46,88 @@ namespace MyLibraryWinForms
 
             // TODO: subscribe to required events
 
+        }
+
+        private void ApplyFilters()
+        {
+            Regex titleRegex;
+
+            // create regular expressions from the user input
+            try
+            {
+                if (string.IsNullOrWhiteSpace(filterTitlesTextBox.Text))
+                {
+                    titleRegex = null;
+                }
+                else
+                {
+                    titleRegex = new Regex(filterTitlesTextBox.Text, REGEX_OPTIONS, REGEX_TIMEOUT);
+                }
+            }
+            catch (Exception ex)
+            {
+                titleRegex = null;
+            }
+
+            int titleCol;
+            if (itemTypesComboBox.Text == "Books")
+            {
+                titleCol = 2;
+            }
+            else
+            {
+                titleCol = 3;
+            }
+
+            // filter the records
+            if (titleRegex == null)
+            {
+                FilterItemsByNone(titleCol);
+            }
+            else
+            {
+                FilterItemsByTitle(titleRegex, titleCol);
+            }
+        }
+
+        private void FilterItemsByTitle(Regex titleRegex, int titleCol)
+        {
+            DataTable itemsTable = itemsGrid.DataSource as DataTable;
+            int currRow = 0;
+            foreach (DataRow row in itemsTable.Rows)
+            {
+                var title = row.ItemArray[titleCol] as string;
+                if (title == null)
+                    continue;
+
+                CurrencyManager cm = (CurrencyManager)BindingContext[itemsGrid.DataSource];
+                cm.SuspendBinding();
+                itemsGrid.CurrentCell = null;
+                itemsGrid.Rows[currRow].Visible = titleRegex.IsMatch(title);
+                cm.ResumeBinding();
+
+                currRow++;
+            }
+        }
+
+        private void FilterItemsByNone(int titleCol)
+        {
+            DataTable itemsTable = itemsGrid.DataSource as DataTable;
+            int currRow = 0;
+            foreach (DataRow row in itemsTable.Rows)
+            {
+                var title = row.ItemArray[titleCol] as string;
+                if (title == null)
+                    continue;
+
+                CurrencyManager cm = (CurrencyManager)BindingContext[itemsGrid.DataSource];
+                cm.SuspendBinding();
+                itemsGrid.CurrentCell = null;
+                itemsGrid.Rows[currRow].Visible = true;
+                cm.ResumeBinding();
+
+                currRow++;
+            }
         }
 
         private void PopulateMainList()
@@ -257,15 +346,15 @@ namespace MyLibraryWinForms
                     // should never happen
                     // show books by default
                     itemTypesComboBox.SelectedIndex = 0;
-                    PopulateMainList();
                 }
 
                 // bind the data table to the grid
                 // TODO: rows are invisible by default
                 itemsGrid.DataSource = itemsTable;
 
-                // TODO: apply filters
-                FilterMainList();
+                itemsGrid.Columns[0].Visible = false; // the first column is the DB id column, make it invisible
+
+                ApplyFilters();
             }
         }
 
@@ -285,17 +374,21 @@ namespace MyLibraryWinForms
             return authorsBuilder.ToString();
         }
 
-        private void FilterMainList()
-        {
-            itemsGrid.Columns[0].Visible = false; // the first column is the DB id column, make it invisible
-            // TODO: filtering
-        }
-
         #region UI event handlers
         private void itemTypesComboBox_TextChanged(object sender, EventArgs e)
         {
             PopulateMainList();
         }
+
+        private void clearFilterButton_Click(object sender, EventArgs e)
+        {
+            filterTitlesTextBox.Text = string.Empty;
+        }
         #endregion
+
+        private void filterTitlesTextBox_TextChanged(object sender, EventArgs e)
+        {
+            ApplyFilters();
+        }
     }
 }

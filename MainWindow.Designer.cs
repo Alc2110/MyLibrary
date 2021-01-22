@@ -30,6 +30,7 @@ namespace MyLibraryWinForms
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -51,9 +52,16 @@ namespace MyLibraryWinForms
             this.itemTypesComboBox = new System.Windows.Forms.ComboBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.viewTagsButton = new System.Windows.Forms.Button();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.filterTitlesTextBox = new System.Windows.Forms.TextBox();
+            this.titleFilterLabel = new System.Windows.Forms.Label();
+            this.applyFilterButton = new System.Windows.Forms.Button();
+            this.clearFilterButton = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.itemsGrid)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -209,20 +217,28 @@ namespace MyLibraryWinForms
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.itemsGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.itemsGrid.Location = new System.Drawing.Point(12, 115);
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Arial", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.itemsGrid.DefaultCellStyle = dataGridViewCellStyle2;
+            this.itemsGrid.Location = new System.Drawing.Point(300, 88);
             this.itemsGrid.Name = "itemsGrid";
             this.itemsGrid.ReadOnly = true;
             this.itemsGrid.RowHeadersWidth = 51;
             this.itemsGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.itemsGrid.Size = new System.Drawing.Size(952, 354);
+            this.itemsGrid.Size = new System.Drawing.Size(664, 381);
             this.itemsGrid.TabIndex = 8;
             // 
             // itemTypesComboBox
             // 
             this.itemTypesComboBox.FormattingEnabled = true;
-            this.itemTypesComboBox.Location = new System.Drawing.Point(12, 88);
+            this.itemTypesComboBox.Location = new System.Drawing.Point(84, 88);
             this.itemTypesComboBox.Name = "itemTypesComboBox";
-            this.itemTypesComboBox.Size = new System.Drawing.Size(411, 21);
+            this.itemTypesComboBox.Size = new System.Drawing.Size(210, 21);
             this.itemTypesComboBox.TabIndex = 10;
             this.itemTypesComboBox.TextChanged += new System.EventHandler(this.itemTypesComboBox_TextChanged);
             // 
@@ -262,14 +278,78 @@ namespace MyLibraryWinForms
             this.viewTagsButton.Text = "View and Edit Tags";
             this.viewTagsButton.UseVisualStyleBackColor = true;
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.groupBox1.Controls.Add(this.clearFilterButton);
+            this.groupBox1.Controls.Add(this.applyFilterButton);
+            this.groupBox1.Controls.Add(this.titleFilterLabel);
+            this.groupBox1.Controls.Add(this.filterTitlesTextBox);
+            this.groupBox1.Location = new System.Drawing.Point(15, 114);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(279, 355);
+            this.groupBox1.TabIndex = 12;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Search";
+            // 
+            // filterTitlesTextBox
+            // 
+            this.filterTitlesTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.filterTitlesTextBox.Location = new System.Drawing.Point(53, 19);
+            this.filterTitlesTextBox.Name = "filterTitlesTextBox";
+            this.filterTitlesTextBox.Size = new System.Drawing.Size(220, 20);
+            this.filterTitlesTextBox.TabIndex = 13;
+            this.filterTitlesTextBox.TextChanged += new System.EventHandler(this.filterTitlesTextBox_TextChanged);
+            // 
+            // titleFilterLabel
+            // 
+            this.titleFilterLabel.AutoSize = true;
+            this.titleFilterLabel.Location = new System.Drawing.Point(9, 20);
+            this.titleFilterLabel.Name = "titleFilterLabel";
+            this.titleFilterLabel.Size = new System.Drawing.Size(30, 15);
+            this.titleFilterLabel.TabIndex = 13;
+            this.titleFilterLabel.Text = "Title";
+            // 
+            // applyFilterButton
+            // 
+            this.applyFilterButton.Location = new System.Drawing.Point(53, 45);
+            this.applyFilterButton.Name = "applyFilterButton";
+            this.applyFilterButton.Size = new System.Drawing.Size(73, 23);
+            this.applyFilterButton.TabIndex = 13;
+            this.applyFilterButton.Text = "Apply";
+            this.applyFilterButton.UseVisualStyleBackColor = true;
+            // 
+            // clearFilterButton
+            // 
+            this.clearFilterButton.Location = new System.Drawing.Point(200, 45);
+            this.clearFilterButton.Name = "clearFilterButton";
+            this.clearFilterButton.Size = new System.Drawing.Size(73, 23);
+            this.clearFilterButton.TabIndex = 14;
+            this.clearFilterButton.Text = "Clear";
+            this.clearFilterButton.UseVisualStyleBackColor = true;
+            this.clearFilterButton.Click += new System.EventHandler(this.clearFilterButton_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(9, 91);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(69, 15);
+            this.label1.TabIndex = 13;
+            this.label1.Text = "Categories:";
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(978, 481);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.tableLayoutPanel1);
-            this.Controls.Add(this.itemTypesComboBox);
             this.Controls.Add(this.itemsGrid);
+            this.Controls.Add(this.itemTypesComboBox);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainWindow";
@@ -278,6 +358,8 @@ namespace MyLibraryWinForms
             this.menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.itemsGrid)).EndInit();
             this.tableLayoutPanel1.ResumeLayout(false);
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -306,6 +388,12 @@ namespace MyLibraryWinForms
         private System.Windows.Forms.ComboBox itemTypesComboBox;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Button viewTagsButton;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Label titleFilterLabel;
+        private System.Windows.Forms.TextBox filterTitlesTextBox;
+        private System.Windows.Forms.Button applyFilterButton;
+        private System.Windows.Forms.Button clearFilterButton;
+        private System.Windows.Forms.Label label1;
     }
 }
 
