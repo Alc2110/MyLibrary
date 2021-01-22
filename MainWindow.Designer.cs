@@ -211,7 +211,9 @@ namespace MyLibraryWinForms
             this.itemsGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.itemsGrid.Location = new System.Drawing.Point(12, 115);
             this.itemsGrid.Name = "itemsGrid";
+            this.itemsGrid.ReadOnly = true;
             this.itemsGrid.RowHeadersWidth = 51;
+            this.itemsGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.itemsGrid.Size = new System.Drawing.Size(952, 354);
             this.itemsGrid.TabIndex = 8;
             // 
