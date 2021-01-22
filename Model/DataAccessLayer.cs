@@ -11,7 +11,7 @@ using MyLibraryWinForms.Model.ObjectModel;
 
 namespace MyLibraryWinForms.Model.DataAccessLayer
 {
-    public abstract class DataAccessObject<T> where T : BaseEntity
+    public abstract class DataAccessObject<T> where T : Entity
     {
         protected readonly string connectionString;
 
@@ -100,7 +100,7 @@ namespace MyLibraryWinForms.Model.DataAccessLayer
 
                 var sql = "SELECT * FROM Authors WHERE id = @id;";
                 var @params = new { id = id };
-                return db.Query<Author>(sql, @params).First();
+                return db.Query<Author>(sql, @params).FirstOrDefault();
             }
         }
 
@@ -350,7 +350,7 @@ namespace MyLibraryWinForms.Model.DataAccessLayer
         }
 
         /// <summary>
-        /// Get book record by id. Authors, tags and publishers are dealt with by the repository, to simplify the query.
+        /// Get book record by id.
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -360,14 +360,16 @@ namespace MyLibraryWinForms.Model.DataAccessLayer
             {
                 db.Open();
 
-                var sql = "SELECT * FROM Books WHERE id = @id";
-                var @params = new { id = id };
-                return db.Query<Book>(sql).First();
+                var sql = "SELECT * FROM Books AS B " +
+                    "INNER JOIN Publishers AS P On B.publisherId = P.id WHERE B.id = " + id + ";"; // TODO: parameterise this
+                var books = db.Query<Book, Publisher, Book>(sql, (book, publisher) => { book.publisher = publisher; return book; });
+
+                return books.FirstOrDefault();
             }
         }
 
         /// <summary>
-        /// Get all book records. Authors, tags and publishers are handled by the repository, to simplify the query.
+        /// Get all book records. 
         /// </summary>
         /// <returns></returns>
         public override IEnumerable<Book> readAll()
@@ -376,8 +378,27 @@ namespace MyLibraryWinForms.Model.DataAccessLayer
             {
                 db.Open();
 
-                var sql = "SELECT * FROM Books;";
-                return db.Query<Book>(sql);
+                var authorsSql = "SELECT A.*, B.id AS BookId FROM Books as B " +
+                         "INNER JOIN Book_Author AS B2A On B.id = B2A.bookId " +
+                         "INNER JOIN Authors A On B2A.authorId = A.id;";
+                var allAuthorsWithBookId = db.Query<dynamic>(authorsSql).AsList();
+
+                var tagsSql = "SELECT T.*, B.id AS BookId FROM Books as B " +
+                              "INNER JOIN Book_Tag AS B2T On B.id = B2T.bookId " +
+                              "INNER JOIN Tags T On B2T.tagId = T.id;";
+                var allTagsWithBookId = db.Query<dynamic>(tagsSql).AsList();
+
+                var sql = "SELECT * FROM Books as B " +
+                          "INNER JOIN Publishers AS P On B.publisherId = P.id;";
+                var allBooks = db.Query<Book, Publisher, Book>(sql, (book, publisher) =>
+                {
+                    book.publisher = publisher;
+                    book.authors = allAuthorsWithBookId.Where(row => row.BookId == (int)book.id).Select(row => new Author { id = (int)row.id, firstName = row.firstName, lastName = row.lastName }).AsList();
+                    book.tags = allTagsWithBookId.Where(row => (int)row.BookId == book.id).Select(row => new Tag { id = (int)row.id, name = row.name }).AsList();
+                    return book;
+                });
+
+                return allBooks;
             }
         }
 
@@ -581,7 +602,7 @@ namespace MyLibraryWinForms.Model.DataAccessLayer
             {
                 db.Open();
 
-                var sql = "SELECT M.Id, M.title, M.type, M.Number, M.image, M.runningTime, M.releaseYear, T.Id, T.Name FROM Media as M" +
+                var sql = "SELECT M.Id, M.title, M.type, M.Number, M.image, M.runningTime, M.releaseYear, M.notes, T.Id, T.Name FROM Media as M" +
                             " LEFT JOIN Media_Tag AS MT ON M.id = MT.mediaId" +
                             " LEFT JOIN Tags AS T ON T.id = MT.tagId" +
                             " WHERE M.Id = " + id + ";"; // TODO: parameterise!
@@ -635,7 +656,7 @@ namespace MyLibraryWinForms.Model.DataAccessLayer
             {
                 db.Open();
 
-                var sql = "SELECT M.Id, M.title, M.type, M.Number, M.image, M.runningTime, M.releaseYear, T.Id, T.Name FROM Media as M" +
+                var sql = "SELECT M.Id, M.title, M.type, M.Number, M.image, M.runningTime, M.releaseYear, M.notes, T.Id, T.Name FROM Media as M" +
                             " LEFT JOIN Media_Tag AS MT ON M.id = MT.mediaId" + 
                             " LEFT JOIN Tags AS T ON T.id = MT.tagId;";
                 
